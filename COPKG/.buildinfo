@@ -1,0 +1,41 @@
+#product-info  {
+	product-name: "libffi";
+	version: "3.0.10";
+	original-source-location: "ftp://sourceware.org/pub/libffi/libffi-3.0.10.tar.gz";
+	original-source-website: "http://sourceware.org/libffi/";
+	license: "Custom - see LICENSE";
+	packager: "HamishC";
+}
+
+
+x86 {
+	//we're using the vc compiler from within mingw, so lets go for the mingw compiler
+	//and add the vc paths ourselves...
+    compiler: mingw;
+    platform: x86;
+    
+    targets: {
+		"i686-pc-mingw32\.libs\libffi.lib",
+		"i686-pc-mingw32\.libs\libffi-5.dll",
+	};
+	
+    build-command:@"
+       rem best you have your visual studio installed in the default location...
+       IF EXIST ""C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"" call ""C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"" x86
+       IF EXIST ""C:\Program Files\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"" call ""C:\Program Files\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"" x86
+
+       bash -c ""configure CC=$PWD/msvcc.sh LD=link CPP='cl -nologo -EP' ""
+       bash -c make
+
+       copy i686-pc-mingw32\.libs\libffi_convenience.lib i686-pc-mingw32\.libs\libffi.lib 
+	";
+    
+    clean-command:@"
+		rem We can't do a make clean because it'll fail without configure.
+		rem erase config.h > nul 2> nul
+		erase Makefile > nul 2> nul
+		erase makefile.sed~ > nul 2> nul
+           erase makefiles* > nul 2> nul
+        if exist i686-pc-mingw32 rmdir /s /q i686-pc-mingw32 > nul 2> nul
+    ";
+};
