@@ -14,6 +14,8 @@ x86 {
     compiler: mingw;
     platform: x86;
     
+    default: false; // This configuration is broken, as the resulting dll has no exports.
+	
     targets: {
 		"i686-pc-mingw32\.libs\libffi.lib",
 		"i686-pc-mingw32\.libs\libffi-5.dll",
@@ -37,5 +39,25 @@ x86 {
 		erase makefile.sed~ > nul 2> nul
            erase makefiles* > nul 2> nul
         if exist i686-pc-mingw32 rmdir /s /q i686-pc-mingw32 > nul 2> nul
+    ";
+};
+
+mingw {
+    compiler: mingw;
+    platform: x86;
+    
+    targets: {
+        "i686-pc-mingw32\.libs\libffi.dll.a",
+        "i686-pc-mingw32\.libs\libffi-5.dll",
+    };
+    
+    build-command:@"
+       sh configure
+       make
+    ";
+    
+    clean-command:@"
+        if exist Makefile make distclean
+        erase makefile.sed~ > nul 2> nul
     ";
 };
