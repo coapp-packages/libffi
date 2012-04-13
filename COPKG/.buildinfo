@@ -1,6 +1,8 @@
+@import "version.inc";
+
 #product-info  {
 	product-name: "libffi";
-	version: "3.0.10";
+	version: "${upstream-version}";
 	original-source-location: "ftp://sourceware.org/pub/libffi/libffi-3.0.10.tar.gz";
 	original-source-website: "http://sourceware.org/libffi/";
 	license: "Expat License";
@@ -51,3 +53,26 @@ mingw {
 release {
 	uses: x86;
 };
+
+test
+{
+};
+
+package
+{
+	targets:
+	{
+        @"COPKG\libffi[vc10]-${package-version}-x86.msi",
+        @"COPKG\libffi-dev[vc10]-${package-version}-x86.msi",
+        @"COPKG\libffi-dev-common-${package-version}-any.msi",
+	};
+
+	build-command: @"
+		if ""${BUILT}"" neq ""true"" ptk release
+		cd COPKG
+		autopackage libffi.autopkg libffi-dev-common.autopkg|| goto failed
+        autopackage libffi-dev.autopkg || goto failed
+	";
+
+	clean-command: @"del COPKG\*.msi COPKG\*.wixpdb";
+}

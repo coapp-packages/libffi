@@ -1,0 +1,95 @@
+@import "version.inc";
+@import "outercurve.inc";
+
+#define { 
+    flavor: "vc10";
+    arch : "x86";
+}
+
+package {
+    name: "libffi[${flavor}]";
+    version: "${package-version}";
+    arch : "${arch}";
+    
+    display-name: "Foreign Function Interface library";
+    location: "http://coapp.org/repository/${OutputFilename}";
+
+    feed: "http://coapp.org/repository/packages.atom.xml";
+    publisher: "CoApp Project";
+}
+
+files[dlls] {
+    root: @"libffi\Release\";
+
+    include: {
+        "libffi.dll",
+    };
+    
+    trim-path: all;
+};
+
+files[files-to-sign] {
+    include: { 
+        dlls
+    };    
+}
+
+provides {
+    feature: "library.libffi.${flavor}" = "${upstream-version}";
+}
+
+license[expat] {
+    license: "..\LICENSE";
+    license-type: "Expat License";
+}
+
+metadata {
+    author-version : "${author-version}";
+    bug-tracker: "https://github.com/coapp-packages/libffi/issues";
+    stability : "0";
+
+    summary: "Foreign Function Interface library";
+    description: @"libffi is a library that allows software to call any function whose interface is known at runtime.";
+    
+    licenses : {
+        expat
+    };
+}
+
+compatability-policy {
+    minimum: "3.0.10.1";
+    maximum: "${OneLessThanCurrent}"; // this is the default
+    versions : {
+    }; // if not specified, find the versions by looking at the feeds and finding all the major/minor versions in range.
+}
+
+manifest[libffi] {
+    assembly : {
+        "libffi[${flavor}]"
+    };
+    
+    include : { 
+        dlls
+    };
+}
+
+assembly[libffi[${flavor}]] {
+    include : {
+        dlls
+    };
+}
+
+signing {
+    attributes : {
+        company="Outercurve Foundation",
+        description="${Package.PackageDetails.SummaryDescription}",
+        product-name="libffi",
+        product-version="${package-version}",
+        file-version="${package-version}",
+    };
+    
+    replace-signature: true; 
+    include: { 
+        files-to-sign
+    };    
+}
