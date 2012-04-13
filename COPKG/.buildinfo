@@ -47,3 +47,7 @@ mingw {
         erase makefile.sed~ > nul 2> nul
     ";
 };
+
+release {
+	uses: x86;
+};
