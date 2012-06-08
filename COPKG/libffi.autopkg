@@ -64,16 +64,6 @@ compatability-policy {
     }; // if not specified, find the versions by looking at the feeds and finding all the major/minor versions in range.
 }
 
-manifest[libffi] {
-    assembly : {
-        "libffi[${flavor}]"
-    };
-    
-    include : { 
-        dlls
-    };
-}
-
 assembly[libffi[${flavor}]] {
     include : {
         dlls
