@@ -5,9 +5,17 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -21,7 +29,18 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -33,7 +52,13 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -42,7 +67,17 @@
     <IncludePath>$(ProjectDir);$(SolutionDir)..\..\src\x86;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
     <CustomBuildBeforeTargets>Link</CustomBuildBeforeTargets>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(ProjectDir);$(SolutionDir)..\..\src\x86;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
+    <CustomBuildBeforeTargets>Link</CustomBuildBeforeTargets>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(ProjectDir);$(SolutionDir)..\..\src\x86;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
+    <CustomBuildBeforeTargets>Link</CustomBuildBeforeTargets>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir);$(SolutionDir)..\..\src\x86;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
     <CustomBuildBeforeTargets>Link</CustomBuildBeforeTargets>
@@ -70,6 +105,31 @@ ml /c /Fo$(IntermediateOutputPath)win32.obj $(IntermediateOutputPath)win32.asm
     </CustomBuildStep>
     <CustomBuildStep>
       <Inputs>$(SolutionDir)..\..\src\x86\win32.S;%(Inputs)</Inputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBFFI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>libffi_win64.def</ModuleDefinitionFile>
+    </Link>
+    <CustomBuildStep>
+      <Command>cl /P /Fi$(IntermediateOutputPath)win64.asm /EP /I$(ProjectDir) /I$(SolutionDir)..\..\include /I$(SolutionDir)..\..\src\x86 $(SolutionDir)..\..\src\x86\win64.S
+ml64 /c /Fo$(IntermediateOutputPath)win64.obj $(IntermediateOutputPath)win64.asm
+</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>$(IntermediateOutputPath)win64.asm;$(IntermediateOutputPath)win64.obj;%(Outputs)</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>$(SolutionDir)..\..\src\x86\win64.S;%(Inputs)</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -101,6 +161,35 @@ ml /c /Fo$(IntermediateOutputPath)win32.obj $(IntermediateOutputPath)win32.asm
       <Inputs>$(SolutionDir)..\..\src\x86\win32.S;%(Inputs)</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBFFI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>libffi_win64.def</ModuleDefinitionFile>
+    </Link>
+    <CustomBuildStep>
+      <Command>cl /P /Fi$(IntermediateOutputPath)win64.asm /EP /I$(ProjectDir) /I$(SolutionDir)..\..\include /I$(SolutionDir)..\..\src\x86 $(SolutionDir)..\..\src\x86\win64.S
+ml64 /c /Fo$(IntermediateOutputPath)win64.obj $(IntermediateOutputPath)win64.asm
+</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>$(IntermediateOutputPath)win64.asm;$(IntermediateOutputPath)win64.obj;%(Outputs)</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>$(SolutionDir)..\..\src\x86\win64.S;%(Inputs)</Inputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\closures.c" />
     <ClCompile Include="..\..\..\src\debug.c" />
@@ -115,6 +204,7 @@ ml /c /Fo$(IntermediateOutputPath)win32.obj $(IntermediateOutputPath)win32.asm
       <FileType>Document</FileType>
     </None>
     <None Include="libffi.def" />
+    <None Include="libffi_win64.def" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ffi.h" />

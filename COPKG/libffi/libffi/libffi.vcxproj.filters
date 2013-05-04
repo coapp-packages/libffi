@@ -52,5 +52,8 @@
     <None Include="libffi.def">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="libffi_win64.def">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
