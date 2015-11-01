@@ -20,14 +20,17 @@
 
 /* Cannot use PROT_EXEC on this target, so, we revert to alternative means */
 /* #undef FFI_EXEC_TRAMPOLINE_TABLE */
+ 
+/* Define this if you want to enable pax emulated trampolines */
+/* #undef FFI_MMAP_EXEC_EMUTRAMP_PAX */
 
 /* Cannot use malloc on this target, so, we revert to alternative means */
 /* #undef FFI_MMAP_EXEC_WRIT */
 
-/* Define this is you do not want support for the raw API. */
+/* Define this if you do not want support for the raw API. */
 /* #undef FFI_NO_RAW_API */
 
-/* Define this is you do not want support for aggregate types. */
+/* Define this if you do not want support for aggregate types. */
 /* #undef FFI_NO_STRUCTS */
 
 /* Define to 1 if you have `alloca', as a function or macro. */
@@ -71,11 +74,17 @@
 /* Define if you have the long double type and it is bigger than a double */
 /* #undef HAVE_LONG_DOUBLE */
 
+/* Define if you support more than one size of the long double type */
+/* #undef HAVE_LONG_DOUBLE_VARIANT */
+
 /* Define to 1 if you have the `memcpy' function. */
 #define HAVE_MEMCPY 1
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
+
+/* Define to 1 if you have the `mkostemp' function. */
+/* #undef HAVE_MKOSTEMP */
 
 /* Define to 1 if you have the `mmap' function. */
 /* #undef HAVE_MMAP */
@@ -150,6 +159,13 @@
 /* The size of `long double', as computed by sizeof. */
 #define SIZEOF_LONG_DOUBLE 8
 
+/* The size of `size_t', as computed by sizeof. */
+#ifdef _WIN64
+#define SIZEOF_SIZE_T 8
+#else
+#define SIZEOF_SIZE_T 4
+#endif
+
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
    automatically deduced at runtime.
@@ -160,6 +176,9 @@
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
+
+/* Define if symbols are underscored. */
+#define SYMBOL_UNDERSCORE 1
 
 /* Define this if you are using Purify and want to suppress spurious messages.
    */

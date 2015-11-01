@@ -23,7 +23,7 @@ nuget {
 		summary: "libffi (Foreign Function Interface) is a library that allows software to call any function whose interface is known at runtime.";
 		description: @"libffi (Foreign Function Interface) is a library that allows software to call any function whose interface is known at runtime.
 Homepage: http://sourceware.org/libffi/";
-		releaseNotes: "Release of libffi 3.0.10 libraries.";
+		releaseNotes: "Release of libffi 3.2.1 libraries.";
 		copyright: Copyright 2013;
 		tags: { libffi, foreign function interface, native, CoApp };
 
@@ -59,10 +59,6 @@ Homepage: http://sourceware.org/libffi/";
 	};
 
 	targets {
-		[dynamic] {
-		    Defines += DYNAMIC_LIBFFI;
-		};
-
 		Defines += HAS_LIBFFI;
 	};
 }

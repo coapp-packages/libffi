@@ -52,6 +52,10 @@
 #define FFI_TARGET_SPECIFIC_STACK_SPACE_ALLOCATION
 #define FFI_TARGET_HAS_COMPLEX_TYPE
 
+#ifdef _MSC_VER
+# undef FFI_TARGET_HAS_COMPLEX_TYPE /* MSVC has complex.h but it doesn't define _Complex */
+#endif
+
 /* ---- Generic type definitions ----------------------------------------- */
 
 #ifndef LIBFFI_ASM

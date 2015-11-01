@@ -27,4 +27,5 @@ EXPORTS
 	ffi_prep_raw_closure
 	ffi_prep_raw_closure_loc
 	ffi_prep_cif
+	ffi_prep_cif_var
 	ffi_call
