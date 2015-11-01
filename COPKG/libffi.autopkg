@@ -1,5 +1,15 @@
 @import @"version.inc";
 
+#define { toolsets: "v100,v110,v120,v140"; }
+
+configurations {
+	UserPlatformToolset {
+	    // Needed because autopackage lacks VS2015 support
+        	key = "PlatformToolset";
+        	choices: ${toolsets};
+	};
+}
+
 nuget {
 	nuspec {
 		id = libffi;
@@ -34,89 +44,25 @@ Homepage: http://sourceware.org/libffi/";
 			..\src\x86\ffi.c,
 		};
 
-		[Win32,v110,dynamic,release] {
-			lib: { libffi\Win32\Release\v110\DynamicLibrary\libffi.lib };
-			bin: { libffi\Win32\Release\v110\DynamicLibrary\libffi.dll };
-			symbols: { libffi\Win32\Release\v110\DynamicLibrary\libffi.pdb };
-		}
+		("Win32,x64",${toolsets},"dynamic,static","release,debug") => {
+		    [${0},${1},${2},${3}] {
+    			lib: { libffi\${0}\${3}\${1}\${2}Library\libffi.lib };
+			};
+		};
 
-		[Win32,v110,static,release] {
-			lib: { libffi\Win32\Release\v110\StaticLibrary\libffi.lib };
-		}
-
-		[x64,v110,dynamic,release] {
-			lib: { libffi\x64\Release\v110\DynamicLibrary\libffi.lib };
-			bin: { libffi\x64\Release\v110\DynamicLibrary\libffi.dll };
-			symbols: { libffi\x64\Release\v110\DynamicLibrary\libffi.pdb };
-		}
-
-		[x64,v110,static,release] {
-			lib: { libffi\x64\Release\v110\StaticLibrary\libffi.lib };
-		}
-
-		[Win32,v100,dynamic,release] {
-			lib: { libffi\Win32\Release\v100\DynamicLibrary\libffi.lib };
-			bin: { libffi\Win32\Release\v100\DynamicLibrary\libffi.dll };
-			symbols: { libffi\Win32\Release\v100\DynamicLibrary\libffi.pdb };
-		}
-
-		[Win32,v100,static,release] {
-			lib: { libffi\Win32\Release\v100\StaticLibrary\libffi.lib };
-		}
-
-		[x64,v100,dynamic,release] {
-			lib: { libffi\x64\Release\v100\DynamicLibrary\libffi.lib };
-			bin: { libffi\x64\Release\v100\DynamicLibrary\libffi.dll };
-			symbols: { libffi\x64\Release\v100\DynamicLibrary\libffi.pdb };
-		}
-
-		[x64,v100,static,release] {
-			lib: { libffi\x64\Release\v100\StaticLibrary\libffi.lib };
-		}
-
-		[Win32,v110,dynamic,debug] {
-			lib: { libffi\Win32\Debug\v110\DynamicLibrary\libffi.lib };
-			bin: { libffi\Win32\Debug\v110\DynamicLibrary\libffi.dll };
-			symbols: { libffi\Win32\Debug\v110\DynamicLibrary\libffi.pdb };
-		}
-
-		[Win32,v110,static,debug] {
-			lib: { libffi\Win32\Debug\v110\StaticLibrary\libffi.lib };
-		}
-
-		[x64,v110,dynamic,debug] {
-			lib: { libffi\x64\Debug\v110\DynamicLibrary\libffi.lib };
-			bin: { libffi\x64\Debug\v110\DynamicLibrary\libffi.dll };
-			symbols: { libffi\x64\Debug\v110\DynamicLibrary\libffi.pdb };
-		}
-
-		[x64,v110,static,debug] {
-			lib: { libffi\x64\Debug\v110\StaticLibrary\libffi.lib };
-		}
-
-		[Win32,v100,dynamic,debug] {
-			lib: { libffi\Win32\Debug\v100\DynamicLibrary\libffi.lib };
-			bin: { libffi\Win32\Debug\v100\DynamicLibrary\libffi.dll };
-			symbols: { libffi\Win32\Debug\v100\DynamicLibrary\libffi.pdb };
-		}
-
-		[Win32,v100,static,debug] {
-			lib: { libffi\Win32\Debug\v100\StaticLibrary\libffi.lib };
-		}
-
-		[x64,v100,dynamic,debug] {
-			lib: { libffi\x64\Debug\v100\DynamicLibrary\libffi.lib };
-			bin: { libffi\x64\Debug\v100\DynamicLibrary\libffi.dll };
-			symbols: { libffi\x64\Debug\v100\DynamicLibrary\libffi.pdb };
-		}
-
-		[x64,v100,static,debug] {
-			lib: { libffi\x64\Debug\v100\StaticLibrary\libffi.lib };
-		}
-
+		("Win32,x64",${toolsets},dynamic,"release,debug") => {
+		    [${0},${1},${2},${3}] {
+    			bin: { libffi\${0}\${3}\${1}\${2}Library\libffi.dll };
+    			symbols: { libffi\${0}\${3}\${1}\${2}Library\libffi.pdb };
+			};
+		};
 	};
 
 	targets {
+		[dynamic] {
+		    Defines += DYNAMIC_LIBFFI;
+		};
+
 		Defines += HAS_LIBFFI;
 	};
 }

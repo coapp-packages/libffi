@@ -195,26 +195,34 @@ typedef struct _ffi_type
  #error "long size not supported"
 #endif
 
+#ifdef DYNAMIC_LIBFFI
+# define DLLIMPORT __declspec(dllimport)
+#else
+# define DLLIMPORT
+#endif
+
 /* These are defined in types.c */
-extern ffi_type ffi_type_void;
-extern ffi_type ffi_type_uint8;
-extern ffi_type ffi_type_sint8;
-extern ffi_type ffi_type_uint16;
-extern ffi_type ffi_type_sint16;
-extern ffi_type ffi_type_uint32;
-extern ffi_type ffi_type_sint32;
-extern ffi_type ffi_type_uint64;
-extern ffi_type ffi_type_sint64;
-extern ffi_type ffi_type_float;
-extern ffi_type ffi_type_double;
-extern ffi_type ffi_type_pointer;
+extern DLLIMPORT ffi_type ffi_type_void;
+extern DLLIMPORT ffi_type ffi_type_uint8;
+extern DLLIMPORT ffi_type ffi_type_sint8;
+extern DLLIMPORT ffi_type ffi_type_uint16;
+extern DLLIMPORT ffi_type ffi_type_sint16;
+extern DLLIMPORT ffi_type ffi_type_uint32;
+extern DLLIMPORT ffi_type ffi_type_sint32;
+extern DLLIMPORT ffi_type ffi_type_uint64;
+extern DLLIMPORT ffi_type ffi_type_sint64;
+extern DLLIMPORT ffi_type ffi_type_float;
+extern DLLIMPORT ffi_type ffi_type_double;
+extern DLLIMPORT ffi_type ffi_type_pointer;
 
 #if HAVE_LONG_DOUBLE /* @HAVE_LONG_DOUBLE@ */
-extern ffi_type ffi_type_longdouble;
+extern DLLIMPORT ffi_type ffi_type_longdouble;
 #else
 #define ffi_type_longdouble ffi_type_double
 #endif
 #endif /* LIBFFI_HIDE_BASIC_TYPES */
+
+#undef DLLIMPORT
 
 typedef enum {
   FFI_OK = 0,
